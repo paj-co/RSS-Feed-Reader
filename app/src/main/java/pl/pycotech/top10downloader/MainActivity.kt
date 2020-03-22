@@ -4,10 +4,25 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
 import java.net.URL
+
+class FeedEntry {
+    var name: String = ""
+    var artist: String = ""
+    var releaseDate: String = ""
+    var summary: String = ""
+    var imageURL: String = ""
+
+    override fun toString(): String {
+        return """
+            name: $name
+            artist: $artist
+            releaseDate: $releaseDate
+            summary: $summary
+            imageURL: $imageURL
+        """.trimIndent()
+    }
+}
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -27,10 +42,12 @@ class MainActivity : AppCompatActivity() {
         private class DownloadData : AsyncTask<String, Void, String>() {
             private val TAG = "DownloadData"
 
-            override fun onPostExecute(result: String?) {
+            override fun onPostExecute(result: String) {
                 super.onPostExecute(result)
-                Log.d(TAG, "onPostExecute: parameter is $result")
+                val parseApplication = ParseApplication()
+                parseApplication.parse(result)
             }
+
 
             override fun doInBackground(vararg url: String?): String {
                 Log.d(TAG, "doInBackground: starts with ${url[0]}")
@@ -42,52 +59,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             private fun downloadXML(urlPath: String?): String {
-                val xmlResult = StringBuilder()
-
-                try {
-                    val url = URL(urlPath)
-                    val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                    val response = connection.responseCode
-                    Log.d(TAG, "downloadXML: The response code was $response")
-
-//                    val reader = BufferedReader(InputStreamReader(connection.inputStream))
-//                    val inputBuffer = CharArray(500)
-//                    var charsRead = 0
-//                    while (charsRead >= 0) {
-//                        charsRead = reader.read(inputBuffer)
-//                        if (charsRead > 0) {
-//                            xmlResult.append(String(inputBuffer, 0, charsRead))
-//                        }
-//                    }
-//
-//                    reader.close()
-
-                    connection.inputStream.buffered().reader().use {
-                        xmlResult.append(it.readText())
-                    }
-
-                    Log.d(TAG, "Received ${xmlResult.length} bytes")
-                    return xmlResult.toString()
-//                } catch (e: MalformedURLException) {
-//                    Log.e(TAG, "downloadXML: Invalid URL: ${e.message}")
-//                } catch (e: IOException) {
-//                    Log.e(TAG, "downloadXML: IO Exception reading data: ${e.message}") //any data read / write exception
-//                } catch (e: SecurityException) {
-//                    Log.e(TAG, "downloadXML: Security exeption. Needs permissions? ${e.message}")
-//                } catch (e: Exception) {
-//                    Log.e(TAG, "Unknown error: ${e.message}")
-//                }
-                } catch (e: Exception) {
-                    val errorMessage: String = when (e) {
-                        is MalformedURLException -> "downloadXML: Invalid URL: ${e.message}"
-                        is IOException -> "downloadXML: IO Exception reading data: ${e.message}"
-                        is SecurityException -> {e.printStackTrace()
-                            "downloadXML: Security exeption. Needs permissions? ${e.message}"
-                        }
-                        else -> "Unknown error: ${e.message}"
-                    }
-                }
-                return ""
+                return URL(urlPath).readText()
             }
         }
     }
