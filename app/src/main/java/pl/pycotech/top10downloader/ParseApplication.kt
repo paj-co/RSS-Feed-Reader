@@ -14,6 +14,7 @@ class ParseApplication {
         Log.d(TAG, "parse: called with $xmlData")
         var status = true
         var inEntry = false
+        //For exact picture if there are many
 //        var gotImage = false
         var textValue = ""
 
@@ -35,7 +36,9 @@ class ParseApplication {
                         Log.d(TAG, "parse: Starting tag for $tagName")
                         if (tagName == "entry") {
                            inEntry = true
-                        }/* else if ((tagName == "image") && inEntry) {
+                        }
+                        //For exact picture if there are many
+                        /* else if ((tagName == "image") && inEntry) {
                             val imageResolution = xpp.getAttributeValue(null, "height")
                             if (imageResolution.isNotEmpty()) {
                                 gotImage = imageResolution == "53"
@@ -59,6 +62,7 @@ class ParseApplication {
                                 "artist" -> currentRecord.artist = textValue
                                 "releasedate" -> currentRecord.releaseDate = textValue
                                 "summary" -> currentRecord.summary = textValue
+                                //For exact picture if there are many
                                 "image" -> /*if(gotImage)*/ currentRecord.imageURL = textValue
 
                             }
