@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -68,8 +67,6 @@ class MainActivity : AppCompatActivity() {
                 val parseApplication = ParseApplication()
                 parseApplication.parse(result)
 
-//                val arrayAdapter = ArrayAdapter<FeedEntry>(propContext, R.layout.list_item, parseApplication.applications)
-//                propListView.adapter = arrayAdapter
                 val arrayAdapter = FeedAdapter(propContext, R.layout.list_record, parseApplication.applications)
                 propListView.adapter = arrayAdapter
 

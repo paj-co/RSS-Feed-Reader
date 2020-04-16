@@ -33,7 +33,8 @@ class ParseApplication {
 
                 when (eventType) {
                     XmlPullParser.START_TAG -> {
-                        Log.d(TAG, "parse: Starting tag for $tagName")
+                        //TODO #delete
+//                        Log.d(TAG, "parse: Starting tag for $tagName")
                         if (tagName == "entry") {
                            inEntry = true
                         }
@@ -49,7 +50,8 @@ class ParseApplication {
                     XmlPullParser.TEXT -> textValue = xpp.text
 
                     XmlPullParser.END_TAG -> {
-                        Log.d(TAG, "parse: Ending tag for $tagName")
+                        //TODO #delete
+//                        Log.d(TAG, "parse: Ending tag for $tagName")
                         if (inEntry) {
                             when (tagName) {
                                 "entry" -> {
@@ -74,10 +76,11 @@ class ParseApplication {
 
             }
 
-            for (app in applications) {
-                Log.d(TAG, "**********************************************************")
-                Log.d(TAG, app.toString())
-            }
+            //TODO #delete
+//            for (app in applications) {
+//                Log.d(TAG, "**********************************************************")
+//                Log.d(TAG, app.toString())
+//            }
 
         } catch (e: Exception) {
             e.printStackTrace()
